@@ -1,0 +1,146 @@
+<%= form_for(@complain, id:'complain_form', controller:'complains') do |f|%>
+  <% if @complain.errors.any?  %>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+
+        <div class="panel panel-danger">
+          <div class="panel-heading">Errores al registrar denuncias</div>
+          <ul class="list-group">
+            <% @complain.errors.full_messages.each do |message| %>
+                <li class='list-group-item'><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+  <% end %> <br> <br>
+  <% if @complain.errors.any?  %>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+
+        <div class="panel panel-danger">
+          <div class="panel-heading">Errores al registrar denuncias</div>
+          <ul class="list-group">
+            <% @complainant.errors.full_messages.each do |message| %>
+                <li class='list-group-item'><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+  <% end %> <br> <br>
+<div id="flash">
+  <% if flash[:notice] %>
+    <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="panel panel-danger">
+          <div class="panel-heading">Errores al registrar denuncias</div>
+            <ul class="list-group">
+              <li class='list-group-item'><%= flash[:notice]  %></li>
+            </ul>
+          </div>
+      </div>
+    <% end %>
+  </div> <br> <br>
+  <%= hidden_field :complain, :id  %>
+
+  <div class="row">
+  <div class="col-md-4">
+    <div  class="field">
+      <label>Datos del denunciante</label><br><hr>
+      <label> Nombre</label>
+      <%= text_field  :complainant,:name ,:class=>'form-control'%>
+    </div>
+    <div  class="field">
+      <label>Apellido</label>
+      <%= text_field :complainant,:last_name ,:class=>'form-control'%>
+    </div>
+    <div  class="field">
+      <label>telefono</label>
+      <%= text_field  :complainant,:phone ,:class=>'form-control'%>
+    </div>
+    <div  class="field">
+      <label>direccion</label>
+      <%= text_field  :complainant,:address ,:class=>'form-control'%>
+    </div>
+    <div  class="field">
+      <label>ci</label>
+      <%= text_field :complainant, :ci,:class=>'form-control'%>
+    </div><hr>
+
+      <div class="field">
+
+        <label>Delito</label>
+
+        <%= f.check_box  :crime ,  :checked => @complain.crime_id!=nil,:id => "crime_checkbox"%>
+
+        <label for="crime_checkbox"><span></span></label><sup>(marcar si quiere registrar un delito )</sup>
+      </div><br>
+      <%if  @complain.crime_id?%>
+      <label><span></span><sup><%= @complain.crime.code%> <%=@complain.crime.name%> introduce este dato en el campo delito</label></sup>
+      <%end %><br>
+    <div class="field">
+      <label>Contraversion</label>
+        <%= f.check_box :contravertion , :id => 'contravertion_checkbox', :checked =>  @complain.contravertion_id!=nil%>
+        <label for="contravertion_checkbox"><span></span></label><sup>(marcar si quiere registrar una contraversion)</sup>
+    </div><br>
+    <%if  @complain.contravertion_id?%>
+    <label><%= @complain.contravertion.code%> <%=@complain.contravertion.name%></label>
+    <%end %><br>
+
+    <div class="field" id="crime-div" <% if  @complain.crime_id!=nil %>style ="display:block" <%else%> style ="display:none" <%end%>>
+       <label>Delito <i class="fa fa-asterisk"></i></label>
+          <%= f.awesomplete_field( :auxCrime, collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')}) %>
+
+      </div><br>
+
+    <div class="field"  id="contravertion-div" <% if  @complain.contravertion_id!=nil %>style ="display:block" <%else%> style ="display:none" <%end%>>
+      <label>Contraversion<i class="fa fa-asterisk"></i></label>
+          <%= f.awesomplete_field( :auxContravertion, collection: @contravertions.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')}) %>
+    </div><br>
+
+    <div class="field">
+      <label>Breve descripción del hecho<i class="fa fa-asterisk"></i></label><br>
+      <%= f.text_area   :description, :class => 'form-control small-text-area'  %>
+    </div><br>
+    <div class="field">
+      <label>Zona <i class="fa fa-asterisk"></i></label><br>
+      <%= f.select   :zone, ['NORTE','NOR-ESTE','NOR-OESTE','ESTE','OESTE','SUD','SUD-OESTE','SUD-OESTE','AV. B. GALINDO', 'AV. PETROLERA'] ,{}, :class => 'form-control'  %>
+    </div><br>
+  </div>
+  <div class="col-md-8">
+    <div class="panel panel-info">
+      <div class="panel-heading">Para seleccionar la ubicacion  haga click en el mapa.</div>
+    </div>
+    <div id="map" style="width: 100%; height: 630px;"></div>
+      <input id="pac-input" class="controls" type="text" size="35" placeholder="Search Box">
+      <%= f.hidden_field   :latitude, id: 'map_lat' %>
+      <%= f.hidden_field   :longitude, id: 'map_lng' %>
+    </div><br>
+    </div>
+
+    <div class="actions center">
+      <%= f.submit 'Registrar', :class => 'btn btn-default'  %>
+    </div>
+<%end%>
+<script type="text/javascript">
+  var crimeCheckbox = document.getElementById('crime_checkbox');
+  var crimeDiv = document.getElementById('crime-div');
+crimeCheckbox.onchange = function() {
+   if(this.checked) {
+      crimeDiv.style['display'] = 'block';
+   } else {
+     crimeDiv.style['display'] = 'none';
+   }
+};
+</script>
+<script type="text/javascript">
+   var contravertionCheckbox = document.getElementById('contravertion_checkbox');
+   var contravertionDiv = document.getElementById('contravertion-div');
+contravertionCheckbox.onchange = function() {
+   if(this.checked) {
+     contravertionDiv.style['display'] = 'block';
+   } else {
+     contravertionDiv.style['display'] = 'none';
+
+   }
+};
+</script>

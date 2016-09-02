@@ -1,0 +1,88 @@
+<%= render :partial => 'static_pages/notice_panel' %>
+
+<h2>Ver Denuncia</h2>
+
+<div class="jumbotron">
+  <table class="table">
+      <tr>
+        <%if   @complain.crime_id!=nil%>
+          <td><strong>delito</strong></td>
+        <td><%= @complain.crime.name %></td>
+        <%end%>
+        <%if   @complain.contravertion_id!=nil%>
+          <td><strong>contravencion</strong></td>
+        <td><%= @complain.contravertion.name %></td>
+        <%end%>
+        </tr>
+        <tr>
+        <%if   @complainant.name!=nil%>
+        <td><strong>denunciante</strong></td>
+        <td><%= @complainant.name %></td>
+        <%end%>
+        <%if   @complainant.last_name!=nil%>
+        <td><strong>apellido</strong></td>
+        <td><%= @complainant.last_name %></td>
+        <%end%>
+        <%if   @complainant.ci!=nil%>
+        <td><strong>ci</strong></td>
+        <td><%= @complainant.ci %></td>
+        <%end%>
+        </tr>
+        <tr>
+      <%if   @complain.description!=nil%>
+        <td><strong>Descripcion</strong></td>
+        <td><%= @complain.description %></td>
+        <%end%>
+        <%if   @complain.observations!=nil%>
+          <td><strong>observaciones</strong></td>
+        <td><%= @complain.observations %></td>
+        <%end%>
+      </tr>
+
+      <tr>
+
+
+        <td><strong>Zona</strong></td>
+        <td><%= @complain.zone %></td>
+      </tr>
+
+  </table>
+  <hr>
+
+  <%if  current_user.role==2 && @complain.observations==nil%>
+  <div class="field"   <% if @observationsAux=="true" %>style ="display:block"  <%else%> style ="display:none" <%end%>>
+    <label>Observaciones <i class="fa fa-asterisk"></i></label><br>
+
+    <%= form_for(@complain) do|f| %>
+    <%= f.text_area :observations, :class => 'form-control small-text-area'  %>
+    <div class="actions center">
+      <%= f.submit 'Registrar', :class => 'btn btn-default'  %>
+    </div>
+    <%end%>
+  </div><br>
+
+  <%end%>
+  <div style="padding-left:15px;">
+    <strong>Ubicacion:</strong>
+    <div id="map" style="width: 100%; height: 250px;"></div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        gmap_show(<%== @complain.to_json %>);
+    });
+</script>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-3  "></div>
+    <% if current_user.role==1 || current_user.role==2 %>
+      <div class="col-xs-6 col-sm-3 ">
+            <%= link_to 'Editar', edit_complain_path(@complain), class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+
+   <div class="col-xs-6 col-sm-3  ">
+    <%= link_to 'Atras', complains_path, class: 'btn btn-default' %>
+  </div>
+</div>
