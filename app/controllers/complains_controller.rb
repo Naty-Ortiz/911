@@ -10,6 +10,11 @@ class ComplainsController < ApplicationController
             @role_current_user = current_user.role
 
           if      @role_current_user==1
+              @patrol_units = Array.new
+            PatrolUnit.all.each do |comp|
+              @patrol_units << [comp.code + ' ' + comp.name,comp.id]
+            end
+
                 if params[:search]
                   @complains = Complain.search(params[:search]).order("created_at DESC")
                 else
@@ -30,18 +35,33 @@ class ComplainsController < ApplicationController
       @observationsAux = params[:observationsAux]
       @complain = Complain.find(params[:id])
       @complainant = Complainant.where(:complain_id => @complain.id).first
-      puts "sdad"
-      puts @complainant
-      puts "ADSad"
-      puts Complainant.find(6)
+
+
     end
     def index_oficial
-      @complains = Complain.where(:user_id =>current_user.id)
+
+           File.open("/home/nataly/1/aux/911/unidades", "r") do |f|
+
+            f.each_line do |line|
+            @aux2=line
+
+            @aux = PatrolUnit.new
+            if @aux2!=nil
+                @aux.code =  @aux2
+              if @aux.valid?
+
+                @aux.save!
+              end
+            end
+            end
+          end
+
     end
     # GET /complains/new
     def new
         if current_user.role==2 ||current_user.role==1
           @complain = Complain.new
+          @complainant = Complainant.new
           @crimes = Array.new
           Crime.all.each do |comp|
             @crimes << [comp.code + ' ' + comp.name]
@@ -94,43 +114,52 @@ class ComplainsController < ApplicationController
       end
 
       if check_box_params[:crime]=='1'
-        @complain.crime_id = Crime.where(:code =>(params[:auxCrime]).split[0...2].join(' ')).pluck(:id).first.to_i
-      elsif check_box_params[:contravertion]=='1'
-        @complain.contravertion = Contravertion.where(:code =>(params[:auxContravertion]).split[0...2].join(' ')).pluck(:id).first.to_i
+        @auxCrime_id = Crime.where(:code =>(params[:auxCrime]).split[0...2].join(' ')).pluck(:id).first.to_i
+      end
+      if check_box_params[:contravertion]=='1'
+        @auxContravertion_id = Contravertion.where(:code =>(params[:auxContravertion]).split[0...2].join(' ')).pluck(:id).first.to_i
+      end
+      if @auxCrime_id!=0
+        @complain.crime_id = @auxCrime_id
+      end
+      if @auxContravertion_id!=0
+          @complain.contravertion_id = @auxContravertion_id
       end
 
       respond_to do |format|
-
-        if (check_box_params[:crime]=='0'&& check_box_params[:contravertion]=='0')|| ( @complain.crime_id == 0 && @complain.contravertion==0 ) || (check_box_params[:crime]=='1' && @complain.crime_id == 0)|| (check_box_params[:contravertion]=='1' && @complain.contravertion_id == 0)
-          flash[:notice] = "Debe registrar un delito o una contraversion"
+        if (check_box_params[:crime]=='0'&& check_box_params[:contravertion]=='0')|| ( @auxCrime_id== 0 && @auxContravertion_id==0 ) || (check_box_params[:crime]=='1' && @auxCrime_id == 0)|| (check_box_params[:contravertion]=='1' && @auxContravertion_id == 0)
+          flash[:notice] = "Debe registrar un delito o una contraversion correctamente"
           format.html { render :new }
           format.json { render json: @complain.errors, status: :unprocessable_entity }
-        else
-          if  @complain.valid?
-
-              if @complainant.valid?
-                 @complain.save!
-                 @complainant.complain_id= @complain.id
-                 @complainant.save!
-
-              flash[:notice] = "Denuncia registrada exitosamente"
-              format.html { redirect_to @complain }
-              format.json { render :show, status: :created, location: @complain }
-              else
+        end
+        if  @complain.valid?
+              if !@complainant.valid?
                 format.html { render :new}
                 format.json { render json: @complainant.errors, status: :unprocessable_entity }
+              else
+                @complain.save!
+                @complainant.complain_id= @complain.id
+                @complainant.save!
+                flash[:notice] = "Denuncia registrada exitosamente"
+                format.html { redirect_to @complain }
+                format.json { render :show, status: :created, location: @complain }
               end
-
-          else
-
+        else
            format.html { render :new}
            format.json { render json: @complain.errors, status: :unprocessable_entity }
-          end
-        end
+         end
       end
+    end
+    def patrol_unit_asign
 
-  end
-
+      @complain = Complain.find(params[:complain][:complain_id])
+       @complain.update_attribute(:patrol_unit_id,  params[:complain][:patrol_unit_id])
+   if @complain.save!
+    redirect_to complains_path, :flash => { :success => "Your message was closed." }
+   else
+    redirect_to show_path, :flash => { :error => "Error closing message." }
+   end
+    end
     # PATCH/PUT /complains/1
     # PATCH/PUT /complains/1.json
     def update
@@ -144,47 +173,49 @@ class ComplainsController < ApplicationController
       @crimes = Array.new
       Crime.all.each do |comp|
         @crimes << [comp.code + ' ' + comp.name]
-      end
+        end
       @contravertions = Array.new
       Contravertion.all.each do |comp|
         @contravertions << [comp.code + ' ' + comp.name]
-      end
-      @complain.update_attributes(complain_params)
+        end
 
       if check_box_params[:crime]=='1'
-        @complain.crime_id =  Crime.where(:code =>(params[:auxCrime]).split[0...2].join(' ')).pluck(:id).first.to_i
-      elsif check_box_params[:contravertion]=='1'
-        @complain.crime_id = Crime.where(:code =>(params[:auxContravertion]).split[0...2].join(' ')).pluck(:id).first.to_i
+        @auxCrime_id = Crime.where(:code =>(params[:auxCrime]).split[0...2].join(' ')).pluck(:id).first.to_i
+        puts Crime.where(:code =>(params[:auxCrime]).split[0...2].join(' ')).pluck(:id).first.to_i
       end
-            respond_to do |format|
-
-          if (check_box_params[:crime]=='0'&& check_box_params[:contravertion]=='0')|| ( @complain.crime_id == 0 && @complain.contravertion==0 ) || (check_box_params[:crime]=='1' && @complain.crime_id == 0)|| (check_box_params[:contravertion]=='1' && @complain.contravertion_id == 0)
-            flash[:notice] = "Debe registrar un delito o una contraversion"
-            format.html { render :new }
-            format.json { render json: @complain.errors, status: :unprocessable_entity }
-          else
-            if  @complain.valid?
-
-                if @complainant.valid?
-                   @complain.save!
-                   @complainant.complain_id= @complain.id
-                   @complainant.save!
-
-                flash[:notice] = "Denuncia registrada exitosamente"
+      if check_box_params[:contravertion]=='1'
+        @auxContravertion_id = Contravertion.where(:code =>(params[:auxContravertion]).split[0...2].join(' ')).pluck(:id).first.to_i
+      end
+      if @auxCrime_id!=0
+        @complain.crime_id = @auxCrime_id
+      end
+      if @auxContravertion_id!=0
+        @complain.contravertion_id = @auxContravertion_id
+      end
+      respond_to do |format|
+        if ((check_box_params[:crime]=='0'&& check_box_params[:contravertion]=='0')|| ( @auxCrime_id== 0 && @auxContravertion_id==0 ) || (check_box_params[:crime]=='1' && @auxCrime_id == 0)|| (check_box_params[:contravertion]=='1' && @auxContravertion_id == 0))
+          flash[:notice] = "Debe registrar un delito o una contraversion correctamente"
+          format.html { render :new }
+          format.json { render json: @complain.errors, status: :unprocessable_entity }
+        end
+        if  @complain.valid?
+              if !@complainant.valid?
+                format.html { render :new}
+                format.json { render json: @complainant.errors, status: :unprocessable_entity }
+              else
+                @complain.update_attributes(complain_params)
+                @complain.save!
+                @complainant.complain_id= @complain.id
+                @complainant.save!
+                flash[:notice] = "Denuncia registrada exitosamente UPDATE"
                 format.html { redirect_to @complain }
                 format.json { render :show, status: :created, location: @complain }
-                else
-                  format.html { render :new}
-                  format.json { render json: @complainant.errors, status: :unprocessable_entity }
-                end
-
-            else
-
-             format.html { render :new}
-             format.json { render json: @complain.errors, status: :unprocessable_entity }
-            end
-          end
-        end
+              end
+        else
+           format.html { render :new}
+           format.json { render json: @complain.errors, status: :unprocessable_entity }
+         end
+      end
 
   end
     # DELETE /complains/1
@@ -207,7 +238,7 @@ class ComplainsController < ApplicationController
         params.require(:complain).permit(:protagonists, :description, :zone, :latitude, :longitude, :crime_id, :observations)
       end
       def check_box_params
-        params.require(:complain).permit( :contravertion,:crime, :crime_checkbox , :contravertion_checkbox, :crimeAux,  :crime_id,:contravertion_id,:auxCrime, :auxContravertion, :observations)
+        params.require(:complain).permit( :contravertion,:crime, :crime_checkbox , :contravertion_checkbox, :crimeAux,  :crime_id,:contravertion_id,:auxCrime, :auxContravertion, :observations,:patrol_unit)
       end
       def complainant_params
         params.require(:complainant).permit(:name, :last_name,:ci, :phone, :address)

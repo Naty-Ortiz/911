@@ -36,13 +36,12 @@
   <thead>
     <tr>
 
-      <th>Nombre del usuario que registro la denuncia</th>
-      <th>Apellido del usuario que registro la denuncia</th>
-      <th>Protagonistas</th>
-      <th>Descripcion</th>
+      <th>Delito</th>
+
+
       <th>Zona</th>
-
-
+      <th>Descripcion</th>
+      <th colspan="3"></th>
 
       <th colspan="3"></th>
     </tr>
@@ -50,18 +49,17 @@
 
   <tbody class="cream-pixels">
     <% @complains.each do |complain| %>
-      <tr>
-        <td><%= complain.user.person.first_name%></td>
-        <td><%=complain.user.person.last_name%></td>
-      <td><%= complain.protagonists %></td>
-      <td><%= complain.description %></td>
-      <td><%= complain.zone %></td>
+
+    <tr>
       <% if  complain.crime_id?%>
       <td><%= complain.crime.code%><%=complain.crime.name%></td>
       <%end %>
       <% if  complain.contravertion_id?%>
       <td><%= complain.contravertion.code%><%=complain.contravertion.name%></td>
       <%end %>
+
+      <td><%= complain.zone %></td>
+      <td><%= complain.description %></td>
         <td><%= link_to 'Ver', complain, class: 'btn btn-default' %></td>
         <%if complain.observations==nil %>
            <td><%= link_to "Observacion", {:action => 'show', :id => complain.id,:observationsAux => true } , class: 'btn btn-primary' %></td>
@@ -69,6 +67,23 @@
         <td></td>
        <%end%>
         <% if current_user.role == 1 %>
+
+            <%if complain.patrol_unit_id==nil%>
+
+
+
+            <td>  <%= form_for(complain, :url => { :action => "patrol_unit_asign" }, :html => { :method => :put } ) do|f| %>
+
+                  <%= f.hidden_field :complain_id, :value => complain.id %>
+
+              <%= f.select :patrol_unit_id, options_for_select(@patrol_units),:class => 'form-control'  %>
+
+                <%= f.submit 'Asignar', :class => 'btn btn-default'  %>
+
+              <%end%>
+              <%else%>
+              <td><%=complain.patrol_unit.code%> <%=complain.patrol_unit.name%></td>
+            </td><%end%>
             <td><%= link_to 'Editar', edit_complain_path(complain) , class:'btn btn-primary'%></td>
             <td><%= link_to 'Eliminar', complain, method: :delete, data: { confirm: 'Esta seguro?' }, class: 'btn btn-danger' %></td>
         <% end %>

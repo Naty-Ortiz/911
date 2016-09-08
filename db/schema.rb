@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901120035) do
+ActiveRecord::Schema.define(version: 20160907201039) do
 
   create_table "announcements", force: :cascade do |t|
     t.string   "title"
@@ -48,11 +48,46 @@ ActiveRecord::Schema.define(version: 20160901120035) do
     t.datetime "updated_at",       null: false
     t.integer  "user_id"
     t.string   "observations"
+    t.string   "caseReport"
+    t.text     "shortReport"
+    t.integer  "patrol_unit_id"
+    t.boolean  "ruralArea"
+    t.string   "provinceName"
+    t.date     "registrationDate"
+    t.time     "registrationHour"
+    t.string   "complainNumber"
+    t.string   "complainPlace"
+    t.string   "derivationCase"
   end
 
   add_index "complains", ["contravertion_id"], name: "index_complains_on_contravertion_id"
   add_index "complains", ["crime_id"], name: "index_complains_on_crime_id"
+  add_index "complains", ["patrol_unit_id"], name: "index_complains_on_patrol_unit_id"
   add_index "complains", ["user_id"], name: "index_complains_on_user_id"
+
+  create_table "complainsAux", force: :cascade do |t|
+    t.string   "numeroDenuncia"
+    t.time     "hora"
+    t.date     "fecha"
+    t.string   "nombreOperador"
+    t.integer  "nroTelefono"
+    t.string   "lugarDenuncia"
+    t.string   "operador"
+    t.string   "nombreDenunciante"
+    t.string   "contravencion"
+    t.string   "delito"
+    t.string   "zonaUrbana"
+    t.string   "zonaRural"
+    t.string   "direccion"
+    t.string   "descripcionHecho"
+    t.string   "unidadAsignada"
+    t.string   "reporteCaso"
+    t.string   "protagonista"
+    t.string   "breveInforme"
+    t.string   "remisionCaso"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "contravertions", force: :cascade do |t|
     t.string   "name"

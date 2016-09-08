@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   end
     get '/index_oficial' => 'complains#index_oficial'
+    post '/complains'=>'complains#patrol_unit_asign'
+    put '/complains'=>'complains#patrol_unit_asign'
   resources :contravertions do
         get :autocomplete_contravertion_name, :on => :collection
   end

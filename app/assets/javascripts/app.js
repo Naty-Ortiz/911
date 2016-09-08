@@ -343,9 +343,7 @@ function _init() {
       });
 
       //Enable expand on hover for sidebar mini
-      if ($.AdminLTE.options.sidebarExpandOnHover
-              || ($('body').hasClass('fixed')
-                      && $('body').hasClass('sidebar-mini'))) {
+      if ($.AdminLTE.options.sidebarExpandOnHover  || ($('body').hasClass('fixed') && $('body').hasClass('sidebar-mini'))) {
         this.expandOnHover();
       }
     },
@@ -354,15 +352,11 @@ function _init() {
       var screenWidth = $.AdminLTE.options.screenSizes.sm - 1;
       //Expand sidebar on hover
       $('.main-sidebar').hover(function () {
-        if ($('body').hasClass('sidebar-mini')
-                && $("body").hasClass('sidebar-collapse')
-                && $(window).width() > screenWidth) {
+        if ($('body').hasClass('sidebar-mini')  && $("body").hasClass('sidebar-collapse')  && $(window).width() > screenWidth) {
           _this.expand();
         }
       }, function () {
-        if ($('body').hasClass('sidebar-mini')
-                && $('body').hasClass('sidebar-expanded-on-hover')
-                && $(window).width() > screenWidth) {
+        if ($('body').hasClass('sidebar-mini')  && $('body').hasClass('sidebar-expanded-on-hover')  && $(window).width() > screenWidth) {
           _this.collapse();
         }
       });
@@ -454,8 +448,7 @@ function _init() {
       btn.on('click', function (e) {
         e.preventDefault();
         //If the sidebar is not open
-        if (!sidebar.hasClass('control-sidebar-open')
-                && !$('body').hasClass('control-sidebar-open')) {
+        if (!sidebar.hasClass('control-sidebar-open') && !$('body').hasClass('control-sidebar-open')) {
           //Open the sidebar
           _this.open(sidebar, o.slide);
         } else {

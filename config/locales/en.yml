@@ -27,7 +27,7 @@ en:
     formats:
       default: "%d/%m/%Y %H:%M"
   hello: "Hello world"
-  
+
   activerecord:
       attributes:
         user:
@@ -97,7 +97,19 @@ en:
           name: 'Nombre'
         document:
           typename: 'Nombre'
-
+        complainant:
+          name: 'Nombre'
+          last_name: 'Apellido'
+          address: 'Dirección'
+          phone: 'Teléfono'
+        complains:
+          description: 'Descripcion'
+          protagonists: 'Protagonistas'
+          zone: 'Zona'
+          latitude: 'Latitud'
+          longitude: 'Longitud'
+          observations: 'Observationes'
+          shortReport: 'Breve informe'
       errors:
         models:
           user:
