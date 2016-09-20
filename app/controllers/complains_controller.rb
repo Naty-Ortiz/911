@@ -72,18 +72,26 @@ class ComplainsController < ApplicationController
         Crime.all.each do |comp|
           @crimes << [comp.code + ' ' + comp.name]
         end
-        @complains = ComplainsAuxiliar.all.search(params[:search]).order('fecha DESC').paginate(:page => params[:page], :per_page => 6)
+        @day = params[:day]
+
         @totalDaysDB = ComplainsAuxiliar.where('fecha >= ?', 3.year.ago).map { |p| p.fecha.beginning_of_day }.uniq.size
         @totalCrimes = ComplainsAuxiliar.where( "delito like ?", "%DH%").count
-        @averagePerHour= @totalCrimes.to_f/@totalDaysDB
-        if params[:searchCrime]
-
+        @totalHoursDB = @totalDaysDB*24
+        @averagePerDay= @totalCrimes.to_f/@totalDaysDB
+        if params[:searchCrime] && @day=="day"
           @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime]}%").count
           @averageCrimePerDay = @totalCrimesSearched.to_f/@totalDaysDB
+          @searchCrime =  params[:searchCrime]
+        elsif params[:searchCrime] && @day=="hour"
+          @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime]}%").count
+          @averageCrimePerHour= @totalCrimesSearched.to_f/@totalHoursDB
           @searchCrime =  params[:searchCrime]
 
          end
 
+    end
+    def index_aux
+        @complains = ComplainsAuxiliar.all.search(params[:search]).order('fecha DESC').paginate(:page => params[:page], :per_page => 6)
     end
     # GET /complains/new
     def new

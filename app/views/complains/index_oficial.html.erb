@@ -1,77 +1,6 @@
-<%= render :partial => 'static_pages/notice_panel' %>
+<h4>PROMEDIO DE DELITOS POR DIA</h4><br/>
 
-
-<div class="row">
-  <div class="col-md-7">
-    <h1>Buscar Denuncia </h1>
-    <br>
-  </div>
-  <div class="col-md-5">
-    <%= render :partial => 'complains/search' %>
-    <div class="form-inline">
-      <br>
-      <%= form_tag(complains_path, :method => 'get', id: 'search-form') do %>
-          <%= text_field_tag :search, params[:search], placeholder: 'Nombre de denuncia', class: 'form-control' %>
-          <%= submit_tag 'Buscar', class: 'btn btn-default' %>
-      <% end %>
-    </div>
-  </div>
-</div>
-<%if not @complains.present? %>
-
-    <div class="row center actions panel panel-danger">
-      <div class="panel-heading">
-        <% if params[:search] %>
-            <p>Su busqueda no generó resultados</p>
-        <%else%>
-            <p>No existen denuncias registrados este momento</p>
-        <%end%>
-      </div>
-    </div>
-<%else%>
-
-    <h1>Lista de denuncias</h1><br/>
-    <div class="col-md-8 col-md-offset-2">
-      <div class="digg_pagination">
-        <%= will_paginate @complains,  :previous_label => 'Atras', :next_label => 'Siguiente', :container => false, renderer: BootstrapPagination::Rails %>
-      </div>
-    </div><br><br><br><br><br>
- <div class="table-responsive">
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-
-      <th>Protagonistas</th>
-      <th>Descripcion</th>
-      <th>Zona</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody class="cream-pixels">
-    <% @complains.each do |complain| %>
-      <tr>
-        <% if  complain.delito!=nil%>
-        <td><%= complain.delito%></td>
-        <%end %>
-        <% if  complain.contravencion!=nil%>
-        <td><%= complain.contravencion%></td>
-        <%end %>
-        <% if  complain.protagonista!=nil%>
-        <td><%= complain.protagonista %></td>
-        <%end %>
-
-
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-</div>
-<br>
-<%end%>
- <h4>PROMEDIO DE DELITOS POR DIA</h4><br/>
-
-<h5>     <p><%= sprintf('%.3f',@averagePerHour)%></p></h5>
+<h5> <p><%if @averagePerDay!=nil%><%= sprintf('%.3f',@averagePerDay)%><%end%></p></h5>
 
 <br>
 
@@ -82,11 +11,38 @@
     <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
 
         <%= awesomplete_field( :searchCrime,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+        <div class="field">
+            <%= radio_button_tag  :day, 'day', :checked=>false,:id=>'day'%>
+          <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
+        </div>
+        <div class="field">
+          <%= radio_button_tag :day, 'hour' , :checked=>false,:id=>'hour'%>
+          <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
+        </div><br>
+        <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+    <% end %>
+  </div>
+  <%if @averageCrimePerDay!=nil&&@day=="day"%>
+  <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
+  <h5>  <p><%= sprintf('%.3f',@averageCrimePerDay )%></p></h5>
+  <%end%>
+   <p><%if @averageCrimePerHour!=nil&&@day=="hour"%>
+  <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
+  <h5> <%= sprintf('%.3f',@averageCrimePerHour )%></p></h5>
+  <%end%>
+ </div>
+<div class="col-md-5">
+
+  <div class="form-inline">
+    <br>
+    <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+
+        <%= awesomplete_field( :searchCrimeHour,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
 
         <%= submit_tag 'Buscar', class: 'btn btn-default' %>
     <% end %>
   </div>
-  <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
-  <h5>  <p><%if @averageCrimePerDay!=nil%><%= sprintf('%.3f',@averageCrimePerDay )%><%end%></p></h5>
+  <h4>PROMEDIO DE <%=@searchCrimeHour%> POR HORA</h4><br/>
+  <h5>  <p><%if @averageCrimePer!=nil%><%= sprintf('%.3f',@averageCrimePerDay )%><%end%></p></h5>
 
 </div>

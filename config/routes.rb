@@ -8,7 +8,8 @@ Rails.application.routes.draw do
     end
   end
     get '/index_oficial' => 'complains#index_oficial'
-    
+    get '/index_aux' => 'complains#index_aux'
+
     post '/complains'=>'complains#patrol_unit_asign'
     put '/complains'=>'complains#patrol_unit_asign'
   resources :contravertions do
