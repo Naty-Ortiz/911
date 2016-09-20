@@ -69,8 +69,24 @@
 </div>
 <br>
 <%end%>
- <h4>PROMEDIO DE DELITOS POR HORA</h4><br/>
- <div class="panel-heading">
-     <p><%= @averagePerHour%></p>
- </div>
+ <h4>PROMEDIO DE DELITOS POR DIA</h4><br/>
+
+<h5>     <p><%= sprintf('%.3f',@averagePerHour)%></p></h5>
+
 <br>
+
+<div class="col-md-5">
+
+  <div class="form-inline">
+    <br>
+    <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+
+        <%= awesomplete_field( :searchCrime,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+
+        <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+    <% end %>
+  </div>
+  <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
+  <h5>  <p><%if @averageCrimePerDay!=nil%><%= sprintf('%.3f',@averageCrimePerDay )%><%end%></p></h5>
+
+</div>
