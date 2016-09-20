@@ -68,7 +68,11 @@ class ComplainsController < ApplicationController
         #    end
         #    end
         #  end
-        
+        @complains = ComplainsAuxiliar.all.search(params[:search]).order('fecha DESC').paginate(:page => params[:page], :per_page => 6)
+        @totalDaysDB = ComplainsAuxiliar.where('fecha >= ?', 3.year.ago).map { |p| p.fecha.beginning_of_day }.uniq.size
+        @totalCrimes = ComplainsAuxiliar.where( "delito like ?", "%DH%").count
+        @averagePerHour= @totalCrimes/@totalDaysDB
+
     end
     # GET /complains/new
     def new
