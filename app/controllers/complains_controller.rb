@@ -12,6 +12,9 @@ class ComplainsController < ApplicationController
           if      @role_current_user==1
               @patrol_units = Array.new
             PatrolUnit.all.each do |comp|
+              if comp.name == nil
+                comp.name=""
+              end
               @patrol_units << [comp.code + ' ' + comp.name,comp.id]
             end
 
@@ -33,29 +36,39 @@ class ComplainsController < ApplicationController
     # GET /complains/1.json
     def show
       @observationsAux = params[:observationsAux]
+      @caseReportAux = params[:caseReportAux]
       @complain = Complain.find(params[:id])
       @complainant = Complainant.where(:complain_id => @complain.id).first
+    end
+    def caseReport
 
+   @complain = Complain.find(params[:id])
+   @complain.completeDate = Date.today
+   if @message.save
+    redirect_to myHomeMessages_path, :flash => { :success => "Your message was closed." }
+   else
+    redirect_to myHomeMessages_path, :flash => { :error => "Error closing message." }
+   end
 
     end
     def index_oficial
 
-           File.open("/home/nataly/1/aux/911/unidades", "r") do |f|
+        #   File.open("/home/nataly/1/aux/911/unidades", "r") do |f|
 
-            f.each_line do |line|
-            @aux2=line
+        #    f.each_line do |line|
+        #    @aux2=line
 
-            @aux = PatrolUnit.new
-            if @aux2!=nil
-                @aux.code =  @aux2
-              if @aux.valid?
+        #    @aux = PatrolUnit.new
+        #    if @aux2!=nil
+        #        @aux.code =  @aux2
+        #      if @aux.valid?
 
-                @aux.save!
-              end
-            end
-            end
-          end
-
+        #        @aux.save!
+        #      end
+        #    end
+        #    end
+        #  end
+        
     end
     # GET /complains/new
     def new
@@ -163,7 +176,7 @@ class ComplainsController < ApplicationController
     # PATCH/PUT /complains/1
     # PATCH/PUT /complains/1.json
     def update
-
+      if @observationsAux==nil
       @complain = Complain.find(params[:id])
       @complain.observations = params[:observations]
       @complainant = Complainant.where(:complain_id => @complain.id).first
@@ -192,6 +205,7 @@ class ComplainsController < ApplicationController
       if @auxContravertion_id!=0
         @complain.contravertion_id = @auxContravertion_id
       end
+    end
       respond_to do |format|
         if ((check_box_params[:crime]=='0'&& check_box_params[:contravertion]=='0')|| ( @auxCrime_id== 0 && @auxContravertion_id==0 ) || (check_box_params[:crime]=='1' && @auxCrime_id == 0)|| (check_box_params[:contravertion]=='1' && @auxContravertion_id == 0))
           flash[:notice] = "Debe registrar un delito o una contraversion correctamente"

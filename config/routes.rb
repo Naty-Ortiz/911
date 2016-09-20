@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :complains do
     get :autocomplete_complain_contravertion, :on => :collection
     get :autocomplete_complain_crime, :on => :collection
-
+    member do
+        post 'caseReport'
+    end
   end
     get '/index_oficial' => 'complains#index_oficial'
     post '/complains'=>'complains#patrol_unit_asign'

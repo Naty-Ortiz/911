@@ -31,6 +31,11 @@
 <%else%>
 
     <h1>Lista de denuncias</h1><br/>
+    <div class="col-md-8 col-md-offset-2">
+      <div class="digg_pagination">
+        <%= will_paginate @complains,  :previous_label => 'Atras', :next_label => 'Siguiente', :container => false, renderer: BootstrapPagination::Rails %>
+      </div>
+    </div><br><br><br><br><br>
  <div class="table-responsive">
 <table class="table table-striped table-hover">
   <thead>
@@ -46,17 +51,17 @@
   <tbody class="cream-pixels">
     <% @complains.each do |complain| %>
       <tr>
-        <% if  complain.crime_id!=nil%>
-        <td><%= complain.crime.code%><%=complain.crime.name%></td>
+        <% if  complain.delito!=nil%>
+        <td><%= complain.delito%></td>
         <%end %>
-        <% if  complain.contravertion_id!=nil%>
-        <td><%= complain.contravertion.code%><%=complain.contravertion.name%></td>
+        <% if  complain.contravencion!=nil%>
+        <td><%= complain.contravencion%></td>
         <%end %>
-        <td><%= complain.protagonists %></td>
-        <td><%= complain.description %></td>
-        <td><%= complain.zone %></td>
-        <td><%= link_to 'Ver', complain, class: 'btn btn-default' %></td>
-        
+        <% if  complain.protagonista!=nil%>
+        <td><%= complain.protagonista %></td>
+        <%end %>
+
+
       </tr>
     <% end %>
   </tbody>

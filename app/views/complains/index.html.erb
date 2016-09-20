@@ -31,19 +31,21 @@
 <%else%>
 
     <h1>Lista de denuncias</h1><br/>
- <div class="table-responsive">
+ <div >
 <table class="table table-striped table-hover">
   <thead>
     <tr>
 
-      <th>Delito</th>
+      <th>Delito o contravencion</th>
 
 
       <th>Zona</th>
       <th>Descripcion</th>
-      <th colspan="3"></th>
-
-      <th colspan="3"></th>
+      <th style="width: 10%">ver</th>
+      <th style="max-width: 5%">asignar4</th>
+      <th style="width: 5%">asignar4</th>
+      <th style="width: 5%">asignar4</th>
+      <th style="width: 15%">asignar4</th>
     </tr>
   </thead>
 
@@ -63,27 +65,23 @@
         <td><%= link_to 'Ver', complain, class: 'btn btn-default' %></td>
         <%if complain.observations==nil %>
            <td><%= link_to "Observacion", {:action => 'show', :id => complain.id,:observationsAux => true } , class: 'btn btn-primary' %></td>
-        <%else%>
-        <td></td>
+
        <%end%>
-        <% if current_user.role == 1 %>
-
-            <%if complain.patrol_unit_id==nil%>
-
-
-
-            <td>  <%= form_for(complain, :url => { :action => "patrol_unit_asign" }, :html => { :method => :put } ) do|f| %>
-
+        <%if current_user.role == 1 %>
+             <%if complain.patrol_unit_id==nil %>
+              <%= form_for(complain, :url => { :action => "patrol_unit_asign" }, :html => { :method => :put } ) do |f| %>
                   <%= f.hidden_field :complain_id, :value => complain.id %>
-
-              <%= f.select :patrol_unit_id, options_for_select(@patrol_units),:class => 'form-control'  %>
-
-                <%= f.submit 'Asignar', :class => 'btn btn-default'  %>
-
-              <%end%>
+                <td style="max-width: 5%">  <%= f.select :patrol_unit_id, options_for_select(@patrol_units),:class => "form-control"  %>
+                <%= f.submit 'Asignar', :class => 'btn btn-default'%> </td>
+            <%end%>
               <%else%>
               <td><%=complain.patrol_unit.code%> <%=complain.patrol_unit.name%></td>
-            </td><%end%>
+            <%end%>
+            <%if complain.caseReport == nil%>
+            <td><%= link_to "Reporte Caso", {:action => 'show', :id => complain.id,:caseReportAux => true } , class: 'btn btn-primary' %></td>
+            <%else%>
+              <%if complain.caseReport == true%> POSITIVO<%else%> NEGATIVO<%end%>
+            <%end%>
             <td><%= link_to 'Editar', edit_complain_path(complain) , class:'btn btn-primary'%></td>
             <td><%= link_to 'Eliminar', complain, method: :delete, data: { confirm: 'Esta seguro?' }, class: 'btn btn-danger' %></td>
         <% end %>

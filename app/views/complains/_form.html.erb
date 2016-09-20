@@ -89,6 +89,10 @@
       <label>Zona <i class="fa fa-asterisk"></i></label><br>
       <%= f.select   :zone, ['NORTE','NOR-ESTE','NOR-OESTE','ESTE','OESTE','SUD','SUD-OESTE','SUD-OESTE','AV. B. GALINDO', 'AV. PETROLERA'] ,{}, :class => 'form-control'  %>
     </div><br>
+    <div class="field"  <% if  @complain.observations!=nil %>style ="display:block" <%else%> style ="display:none" <%end%>>
+      <label>Observaciones <i class="fa fa-asterisk"></i></label><br>
+      <%= f.text_area   :observations, :class => 'form-control small-text-area'  %>
+    </div><br>
   </div>
   <div class="col-md-8">
     <div class="panel panel-info">
@@ -113,9 +117,7 @@ crimeCheckbox.onchange = function() {
    } else {
      crimeDiv.style['display'] = 'none';
    }
-};
-</script>
-<script type="text/javascript">
+}
    var contravertionCheckbox = document.getElementById('contravertion_checkbox');
    var contravertionDiv = document.getElementById('contravertion-div');
 contravertionCheckbox.onchange = function() {

@@ -21,47 +21,47 @@ AIzaSyDJCxMIk3GTjMB77nK64W9DosMwb6w5oe0&libraries=places"
     <ul class="nav navbar-nav navbar-left">
      <% if current_user.role == 1 %>
     <li class="dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle">Usuarios <b class="caret"></b></a>
+  <h4 class="display-4"> <p class="text-Info"> <a href="#" data-toggle="dropdown" class="dropdown-toggle">Usuarios <b class="caret"></b></a></p></h4>
       <ul class="dropdown-menu" id="menu1">
-       <li><a href="/users"><i class="fa fa-list"></i>Ver Lista</a></li>
+    <h4 class="display-4">   <li><a href="/users"><i class="fa fa-list"></i>Ver Lista</a></li></h4>
       </ul>
     </li>
     <li class="dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle">Oficiales <b class="caret"></b></a>
+    <h4 class="display-4">  <a href="#" data-toggle="dropdown" class="dropdown-toggle">Oficiales <b class="caret"></b></a></h4>
       <ul class="dropdown-menu" id="menu1">
-       <li><a href="/employees/new"><i class="fa fa-plus"></i>Registrar nuevo </a></li>
-      <li><a href="/employees"><i class="fa fa-list"></i>Ver Lista</a></li>
+      <h4 class="display-4">   <li><a href="/employees/new"><i class="fa fa-plus"></i>Registrar nuevo </a></li>
+      <h4 class="display-4">  <li><a href="/employees"><i class="fa fa-list"></i>Ver Lista</a></li>
       </ul>
     </li>
     <li class="dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Administrar Delito</span> <b class="caret"></b> </a>
+      <h4 class="display-4">  <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Administrar Delito</span> <b class="caret"></b> </a>
       <ul  class="dropdown-menu" id="menu1">
-      <li><a href="/crimes/new"><i class="fa fa-plus"></i>Registrar </a></li>
-      <li><a href="/crimes"><i class="fa fa-list"></i>Ver Lista</a></li>
+      <h4 class="display-4">  <li><a href="/crimes/new"><i class="fa fa-plus"></i>Registrar </a></li>
+      <h4 class="display-4">  <li><a href="/crimes"><i class="fa fa-list"></i>Ver Lista</a></li>
       </ul>
     </li>
     <li class="dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Administrar Contravenciones</span> <b class="caret"></b> </a>
+      <h4 class="display-4">  <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Administrar Contravenciones</span> <b class="caret"></b> </a>
       <ul  class="dropdown-menu" id="menu1">
-      <li><a href="/contravertions/new"><i class="fa fa-plus"></i>Registrar </a></li>
-      <li><a href="/contravertions"><i class="fa fa-list"></i>Ver Lista</a></li>
+      <h4 class="display-4">  <li><a href="/contravertions/new"><i class="fa fa-plus"></i>Registrar </a></li>
+      <h4 class="display-4">  <li><a href="/contravertions"><i class="fa fa-list"></i>Ver Lista</a></li>
       </ul>
     </li>
     <li class="dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Administrar Unidades</span> <b class="caret"></b> </a>
+      <h4 class="display-4">  <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Administrar Unidades</span> <b class="caret"></b> </a>
       <ul  class="dropdown-menu" id="menu1">
-      <li><a href="/patrol_units/new"><i class="fa fa-plus"></i>Registrar nueva unidad de patrulla </a></li>
-      <li><a href="/patrol_units"><i class="fa fa-list"></i>Ver Lista</a></li>
+      <h4 class="display-4"><li><a href="/patrol_units/new"><i class="fa fa-plus"></i>Registrar nueva unidad de patrulla </a></li>
+      <h4 class="display-4"><li><a href="/patrol_units"><i class="fa fa-list"></i>Ver Lista</a></li>
       </ul>
     </li>
 
     <%end%>
     <% if  current_user.role == 2  || current_user.role == 1%>
     <li class="dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Denuncias</span> <b class="caret"></b> </a>
+      <h4 class="display-4">  <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <span>Denuncias</span> <b class="caret"></b> </a></h4>
       <ul  class="dropdown-menu" id="menu1">
-      <li><a href="/complains/new"><i class="fa fa-plus"></i>Registrar nueva denuncia </a></li>
-      <li><a href="/complains"><i class="fa fa-list"></i>Ver lista</a></li>
+        <h4 class="display-4"><li><a href="/complains/new"><i class="fa fa-plus"></i>Registrar nueva denuncia </a></li></h4>
+        <h4 class="display-4"><li><a href="/complains"><i class="fa fa-list"></i>Ver lista</a></li></h4>
       </ul>
     </li>
     <%end%>
@@ -71,7 +71,7 @@ AIzaSyDJCxMIk3GTjMB77nK64W9DosMwb6w5oe0&libraries=places"
       <!-- Non-collapsing right-side icons -->
       <%if user_signed_in? %>
       <ul class="nav navbar-nav navbar-right"  >
-
+          <h4 class="display-4">
         <li class="nav navbar-nav navbar-right">
         <a id="sign-out" rel="nofollow" href="/logout">
           <i class="fa fa-fw fa-lock"></i>Cerrar Sesion
@@ -80,6 +80,7 @@ AIzaSyDJCxMIk3GTjMB77nK64W9DosMwb6w5oe0&libraries=places"
         <li class="nav navbar-nav navbar-right">
           <a href="/users/edit">  <%= current_user.person.first_name %>&nbsp;<%= current_user.person.last_name %>  </a>
         </li>
+      </h4>
       </ul>
 
       <%end%>

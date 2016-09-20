@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907201039) do
+ActiveRecord::Schema.define(version: 20160913133328) do
 
   create_table "announcements", force: :cascade do |t|
     t.string   "title"
@@ -21,6 +21,10 @@ ActiveRecord::Schema.define(version: 20160907201039) do
     t.integer  "employee_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "aux2", id: false, force: :cascade do |t|
+    t.text "col_1"
   end
 
   create_table "complainants", force: :cascade do |t|
@@ -87,6 +91,50 @@ ActiveRecord::Schema.define(version: 20160907201039) do
     t.string   "remisionCaso"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "complainsAux2", id: false, force: :cascade do |t|
+    t.text     "numeroDenuncia"
+    t.datetime "hora"
+    t.datetime "fecha"
+    t.text     "lugarDenuncia"
+    t.text     "operador"
+    t.text     "nombreOperador"
+    t.integer  "nroTelefono"
+    t.text     "denunciante"
+    t.text     "contravencion"
+    t.text     "delito"
+    t.text     "ZonaUrbana"
+    t.text     "zonaRural"
+    t.text     "direccion"
+    t.text     "descripcionHecho"
+    t.text     "unidadAsignada"
+    t.text     "reporteCaso"
+    t.text     "protagonista"
+    t.text     "breveInforme"
+    t.text     "remisionCaso"
+  end
+
+  create_table "complains_auxiliars", force: :cascade do |t|
+    t.string   "numeroDenuncia"
+    t.time     "hora"
+    t.datetime "fecha"
+    t.text     "lugarDenuncia"
+    t.text     "operador"
+    t.text     "nombreOperador"
+    t.integer  "nroTelefono"
+    t.string   "denunciante"
+    t.string   "contravencion"
+    t.string   "delito"
+    t.string   "ZonaUrbana"
+    t.string   "zonaRural"
+    t.string   "direccion"
+    t.text     "descripcionHecho"
+    t.string   "unidadAsignada"
+    t.text     "reporteCaso"
+    t.text     "protagonista"
+    t.text     "breveInforme"
+    t.text     "remisionCaso"
   end
 
   create_table "contravertions", force: :cascade do |t|
