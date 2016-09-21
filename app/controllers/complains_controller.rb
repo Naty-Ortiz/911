@@ -72,22 +72,49 @@ class ComplainsController < ApplicationController
         Crime.all.each do |comp|
           @crimes << [comp.code + ' ' + comp.name]
         end
+        @contravertions = Array.new
+        Contravertion.all.each do |comp|
+          @contravertions << [comp.code + ' ' + comp.name]
+        end
         @day = params[:day]
-
         @totalDaysDB = ComplainsAuxiliar.where('fecha >= ?', 3.year.ago).map { |p| p.fecha.beginning_of_day }.uniq.size
         @totalCrimes = ComplainsAuxiliar.where( "delito like ?", "%DH%").count
         @totalHoursDB = @totalDaysDB*24
         @averagePerDay= @totalCrimes.to_f/@totalDaysDB
         if params[:searchCrime] && @day=="day"
-          @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime]}%").count
+          @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime].split[0...2].join(' ')}%").count
           @averageCrimePerDay = @totalCrimesSearched.to_f/@totalDaysDB
           @searchCrime =  params[:searchCrime]
+          puts "ads"
+          puts  @totalCrimesSearched
+          puts "aaaad"
+          puts @averageCrimePerDay
         elsif params[:searchCrime] && @day=="hour"
-          @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime]}%").count
-          @averageCrimePerHour= @totalCrimesSearched.to_f/@totalHoursDB
-          @searchCrime =  params[:searchCrime]
-
+           @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime].split[0...2].join(' ')}%").count
+           @averageCrimePerHour= @totalCrimesSearched.to_f/@totalHoursDB
+           @searchCrime =  params[:searchCrime]
          end
+         if params[:searchContravertion] && @day=="day"
+           @totalContravertionsSearched = ComplainsAuxiliar.where( "contravencion like ?", "%#{params[:searchContravertion].split[0...2].join(' ')}%").count
+           @averageContravertionsPerDay = @totalContravertionsSearched.to_f/@totalDaysDB
+           @searchConstravertion =  params[:searchConstravertion]
+           puts "ads"
+           puts @totalContravertionsSearched
+           puts"ads"
+           puts @averageContravertionsPerDay
+
+           puts "asd"
+         elsif params[:searchContravertion] && @day=="hour"
+           @totalContravertionsSearched = ComplainsAuxiliar.where( "contravencion like ?", "%#{params[:searchContravertion].split[0...2].join(' ')}%").count
+           @averageContravertionsPerHour= @totalContravertionsSearched.to_f/@totalHoursDB
+           @searchContravertion =  params[:searchContravertion]
+           puts "ads"
+           puts @totalContravertionsSearched
+           puts"ads"
+           puts @averageContravertionsPerHour
+
+           puts "asd"
+          end
 
     end
     def index_aux

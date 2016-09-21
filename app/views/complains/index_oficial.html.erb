@@ -3,11 +3,12 @@
 <h5> <p><%if @averagePerDay!=nil%><%= sprintf('%.3f',@averagePerDay)%><%end%></p></h5>
 
 <br>
+<div class="row">
 
 <div class="col-md-5">
 
   <div class="form-inline">
-    <br>
+     <br><h4>Promedio de delitos</h4>
     <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
 
         <%= awesomplete_field( :searchCrime,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
@@ -31,18 +32,35 @@
   <h5> <%= sprintf('%.3f',@averageCrimePerHour )%></p></h5>
   <%end%>
  </div>
-<div class="col-md-5">
+ <div class="col-md-5">
 
-  <div class="form-inline">
-    <br>
-    <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+   <div class="form-inline">
+     <br><h4>Promedio de contravenciones</h4>
+     <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
 
-        <%= awesomplete_field( :searchCrimeHour,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
-
-        <%= submit_tag 'Buscar', class: 'btn btn-default' %>
-    <% end %>
-  </div>
-  <h4>PROMEDIO DE <%=@searchCrimeHour%> POR HORA</h4><br/>
-  <h5>  <p><%if @averageCrimePer!=nil%><%= sprintf('%.3f',@averageCrimePerDay )%><%end%></p></h5>
-
-</div>
+         <%= awesomplete_field( :searchContravertion,  collection: @contravertions.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+         <div class="field">
+             <%= radio_button_tag  :day, 'day', :checked=>false,:id=>'day'%>
+           <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
+         </div>
+         <div class="field">
+           <%= radio_button_tag :day, 'hour' , :checked=>false,:id=>'hour'%>
+           <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
+         </div><br>
+         <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+     <% end %>
+   </div>
+   <%if @averageContravertionsPerDay!=nil&&@day=="day"%>
+   <h4>PROMEDIO DE <%=@searchContravertion%> POR DIA</h4><br/>
+   <h5>  <p><%= sprintf('%.3f',@averageContravertionsPerDay )%></p></h5>
+   <%end%>
+    <p><%if @averageContravertionsPerHour!=nil&&@day=="hour"%>
+   <h4>PROMEDIO DE <%=@searchContravertion%> POR HORA</h4><br/>
+   <h5> <%= sprintf('%.3f',@averageContravertionsPerHour )%></p></h5>
+   <%end%>
+ </div>
+ </div>
+ <br>
+ <div class="row">
+   
+ </div>
