@@ -4,14 +4,39 @@
   <title>Sistema de Registro de Denuncias 911</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= yield :javascript_includes %>
   <%= csrf_meta_tags %>
   <%= favicon_link_tag('icons/escudo-cochabamba.ico') %>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=
 AIzaSyDJCxMIk3GTjMB77nK64W9DosMwb6w5oe0&libraries=places"
   type="text/javascript"></script>
   <script src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js"></script>
-  <script src='//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js' type='text/javascript'></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+  <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+
+
+
+
 </head>
 <body >
 
@@ -88,36 +113,34 @@ AIzaSyDJCxMIk3GTjMB77nK64W9DosMwb6w5oe0&libraries=places"
     </div>
     <!--/.container -->
   </nav>
+<div class="content-wrapper white-wall" style="min-height: 1078px;">
+   <!-- Content Header (Page header) -->
+   <section class="content-header">
 
-<div class="wrapper">
+   </section>
 
-  <div class="content-wrapper white-wall" >
-    <section class="content">
-      <div class="row">
-          <div class="col-md-1"></div>
-          <div class="col-md-10">
-            <%= yield %>
-          </div>
-          <div class="col-md-1"></div>
+   <!-- Main content -->
+   <section class="content">
+     <div class="row">
+         <div class="col-md-1"></div>
+         <div class="col-md-10">
+           <%= yield %>
+         </div>
+         <div class="col-md-1"></div>
+     </div>
+   </section><!-- /.content -->
+ </div>
+  <footer class="footer">
+      <div class="container">
+        <footer class="main-footer" style="max-height: 60px">
+           <!-- To the right -->
+           <div class="pull-right hidden-xs">
+             <strong> Nataly Ortiz </strong>
+           </div>
+           <!-- Default to the left -->
+           <strong>  <a href="https://www.ucbcba.edu.bo/"><%= image_tag( 'logo-UCB.png', { height: '40px', width: '30px' } ) %> Universidad Cat&oacute;lica Boliviana "San Pablo"</a> <%= Date.today.year %> </strong> Cochabamba
+         </footer>
       </div>
-    </section><!-- /.content -->
-  </div><!-- /.content-wrapper -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer" style="max-height: 60px">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      <strong> Nataly Ortiz </strong>
-    </div>
-    <!-- Default to the left -->
-    <strong>  <a href="https://www.ucbcba.edu.bo/"><%= image_tag( 'logo-UCB.png', { height: '40px', width: '30px' } ) %> Universidad Cat&oacute;lica Boliviana "San Pablo"</a> <%= Date.today.year %> </strong> Cochabamba
-  </footer>
-
-  <!-- Control Sidebar -->
-
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
-</div><!-- ./wrapper -->
+</footer>
 </body>
 </html>

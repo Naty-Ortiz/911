@@ -3,6 +3,31 @@
 /*}*/
 
 
+
+html,body {
+    height:100%;
+    width: 100%;
+}
+
+body {
+    display: table;
+}
+
+.container {
+
+    height: auto;
+    background-image: image-url("white-wall-texture.png");
+}
+
+.footer {
+    display: table-row;
+    height: 1px;
+}
+#eventForm .dateContainer .form-control-feedback {
+    top: 0;
+    right: -15px;
+}
+
 .sidebar-nav {
     padding: 9px 0;
 }

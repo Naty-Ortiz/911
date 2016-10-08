@@ -77,6 +77,7 @@ class ComplainsController < ApplicationController
           @contravertions << [comp.code + ' ' + comp.name]
         end
         @day = params[:day]
+        @dayP = params[:dayP]
         @totalDaysDB = ComplainsAuxiliar.where('fecha >= ?', 3.year.ago).map { |p| p.fecha.beginning_of_day }.uniq.size
         @totalCrimes = ComplainsAuxiliar.where( "delito like ?", "%DH%").count
         @totalHoursDB = @totalDaysDB*24
@@ -85,10 +86,7 @@ class ComplainsController < ApplicationController
           @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime].split[0...2].join(' ')}%").count
           @averageCrimePerDay = @totalCrimesSearched.to_f/@totalDaysDB
           @searchCrime =  params[:searchCrime]
-          puts "ads"
-          puts  @totalCrimesSearched
-          puts "aaaad"
-          puts @averageCrimePerDay
+
         elsif params[:searchCrime] && @day=="hour"
            @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrime].split[0...2].join(' ')}%").count
            @averageCrimePerHour= @totalCrimesSearched.to_f/@totalHoursDB
@@ -98,23 +96,104 @@ class ComplainsController < ApplicationController
            @totalContravertionsSearched = ComplainsAuxiliar.where( "contravencion like ?", "%#{params[:searchContravertion].split[0...2].join(' ')}%").count
            @averageContravertionsPerDay = @totalContravertionsSearched.to_f/@totalDaysDB
            @searchConstravertion =  params[:searchConstravertion]
-           puts "ads"
-           puts @totalContravertionsSearched
-           puts"ads"
-           puts @averageContravertionsPerDay
-
-           puts "asd"
          elsif params[:searchContravertion] && @day=="hour"
            @totalContravertionsSearched = ComplainsAuxiliar.where( "contravencion like ?", "%#{params[:searchContravertion].split[0...2].join(' ')}%").count
            @averageContravertionsPerHour= @totalContravertionsSearched.to_f/@totalHoursDB
            @searchContravertion =  params[:searchContravertion]
-           puts "ads"
-           puts @totalContravertionsSearched
-           puts"ads"
-           puts @averageContravertionsPerHour
-
-           puts "asd"
           end
+          if params[:searchCrimeProbability] && @dayP=="day"
+           @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrimeProbability].split[0...2].join(' ')}%").count
+          @probabilityCrimePerDay = @totalCrimesSearched.to_f/@totalDaysDB
+          
+          @searchCrimeProbability =  params[:searchCrimeProbability]
+          puts "asda"
+          puts  @totalCrimesSearched
+           puts "asda"
+            puts @probabilityCrimePerDay
+            puts"ad"
+            puts @searchCrimeProbability 
+
+        elsif params[:searchCrimeProbability] && @dayP=="hour"
+           @totalCrimesSearched = ComplainsAuxiliar.where( "delito like ?", "%#{params[:searchCrimeProbability].split[0...2].join(' ')}%").count
+           @probabilityCrimePerHour= @totalCrimesSearched.to_f/@totalHoursDB
+           @searchCrimeProbability =  params[:searchCrimeProbability]
+            puts "as"
+          puts  @totalCrimesSearched
+           puts "as"
+            puts @probabilityCrimePerHour
+            puts"adKKK"
+            puts @searchCrimeProbability 
+          end
+
+          if params[:searchContravertionProbability] && @dayP=="day"
+           @totalContravertionsSearched = ComplainsAuxiliar.where( "contravencion like ?", "%#{params[:searchContravertionProbability].split[0...2].join(' ')}%").count
+           @probabilityContravertionsPerDay = @totalContravertionsSearched.to_f/@totalDaysDB
+           @searchConstravertionProbability =  params[:searchConstravertionProbability]
+            puts "as"
+          puts  @totalContravertionsSearched
+           puts "as"
+            puts @probabilityContravertionsPerDay 
+            puts"adKKK"
+            puts @searchContravertionProbability 
+         elsif params[:searchContravertionProbability] && @dayP=="hour"
+           @totalContravertionsSearched = ComplainsAuxiliar.where( "contravencion like ?", "%#{params[:searchContravertionProbability].split[0...2].join(' ')}%").count
+           @probabilityContravertionsPerHour= @totalContravertionsSearched.to_f/@totalHoursDB
+           @searchContravertionProbability =  params[:searchContravertionProbability]
+             puts "asuuu"
+          puts  @totalContravertionsSearched
+           puts "as"
+            puts @probabilityContravertionsPerHour 
+            puts"adKKK"
+            puts @searchContravertionProbability 
+           
+        end
+        
+          
+          if params[:searchContravertionProbabilityDate] 
+         @dateStart = params[:startdate]
+         @dateEnd=params[:enddate]
+          puts"adKKhhhhhK"
+              puts @dateStart.to_s
+                puts"adKKhhhhhK"
+                puts @dateEnd.to_s
+                  puts"adKKhhhhhK"
+                puts @dateS
+                  puts"adKKhhhhhK"
+                  puts @dateE
+                    puts"adKKhhhhhK"
+           @dateStart = DateTime.new params[:startdate]["{:ampm=>true}(1i)"].to_i,params[:startdate] ["{:ampm=>true}(2i)"].to_i, params[:startdate]["{:ampm=>true}(3i)"].to_i, params[:startdate]["{:ampm=>true}(4i)"].to_i,  params[:startdate]["{:ampm=>true}(5i)"].to_i
+          @dateEnd = DateTime.new params[:enddate]["{:ampm=>true}(1i)"].to_i, params[:enddate]["{:ampm=>true}(2i)"].to_i, params[:enddate]["{:ampm=>true}(3i)"].to_i, params[:enddate]["{:ampm=>true}(4i)"].to_i, params[:enddate]["{:ampm=>true}(5i)"].to_i
+
+         @dateS=@dateStart.strftime("%d/%m/%Y") 
+         @dateE=@dateEnd.strftime("%d/%m/%Y") 
+         @hourE= @dateEnd.strftime("%H:%M")
+         @hourS =@dateStart.strftime("%H:%M")
+           @totalContravertionsSearched = ComplainsAuxiliar.where( "(fecha >= ? AND fecha <= ? ) AND  (hora >=? AND hora <=?) AND contravencion like ?", "#{@dateS}","#{@dateE}","#{@hourS}","#{@hourE}","#{params[:searchContravertionProbabilityDate]}").count
+          @probabilityContravertionsProbabilityDate = @totalContravertionsSearched.to_f/@totalDaysDB
+           @searchContravertionProbabilityDate =  params[:searchContravertionProbabilityDate]
+
+            puts "as"
+          puts  @totalContravertionsSearched
+           puts "as"
+            puts @probabilityContravertionsProbabilityDate
+            puts"adKKhhhhhK"
+            puts @searchConstravertionProbabilityDate
+              puts"adKKhhhhhK"
+              puts @dateStart
+                puts"adKKhhhhhK"
+                puts @dateEnd
+                  puts"adKKhhhhhK"
+                puts @dateS
+                  puts"adKKhhhhhK"
+                  puts @dateE
+                    puts"adKKhhhhhK"
+
+                  puts @hourS
+                    puts"adKKhhhhhK"
+                    puts @hourE
+                      puts"adKKhhhhhK"
+          end
+    
 
     end
     def index_aux

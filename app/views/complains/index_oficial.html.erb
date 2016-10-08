@@ -1,3 +1,7 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "index_oficial.js" %>
+<% end %>
+
 <h4>PROMEDIO DE DELITOS POR DIA</h4><br/>
 
 <h5> <p><%if @averagePerDay!=nil%><%= sprintf('%.3f',@averagePerDay)%><%end%></p></h5>
@@ -8,59 +12,181 @@
 <div class="col-md-5">
 
   <div class="form-inline">
-     <br><h4>Promedio de delitos</h4>
-    <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
-
-        <%= awesomplete_field( :searchCrime,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
-        <div class="field">
-            <%= radio_button_tag  :day, 'day', :checked=>false,:id=>'day'%>
-          <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
-        </div>
-        <div class="field">
-          <%= radio_button_tag :day, 'hour' , :checked=>false,:id=>'hour'%>
-          <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
-        </div><br>
-        <%= submit_tag 'Buscar', class: 'btn btn-default' %>
-    <% end %>
+       <br><h4>Promedio de delitos</h4>
+       <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+           <%= awesomplete_field( :searchCrime,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+           <div class="field">
+               <%= radio_button_tag  :day, 'day', :checked=>false,:id=>'day'%>
+             <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
+           </div>
+           <div class="field">
+             <%= radio_button_tag :day, 'hour' , :checked=>false,:id=>'hour'%>
+             <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
+           </div><br>
+           <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+       <% end %>
+     </div>
+     <%if @averageCrimePerDay!=nil&&@day=="day"%>
+     <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
+     <h5>  <p><%= sprintf('%.3f',@averageCrimePerDay )%></p></h5>
+     <%end%>
+      <p><%if @averageCrimePerHour!=nil&&@day=="hour"%>
+     <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
+     <h5> <%= sprintf('%.3f',@averageCrimePerHour )%></p></h5>
+     <%end%>
   </div>
-  <%if @averageCrimePerDay!=nil&&@day=="day"%>
-  <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
-  <h5>  <p><%= sprintf('%.3f',@averageCrimePerDay )%></p></h5>
-  <%end%>
-   <p><%if @averageCrimePerHour!=nil&&@day=="hour"%>
-  <h4>PROMEDIO DE <%=@searchCrime%> POR DIA</h4><br/>
-  <h5> <%= sprintf('%.3f',@averageCrimePerHour )%></p></h5>
-  <%end%>
- </div>
+  <div class="col-md-5">
+
+    <div class="form-inline">
+      <br><h4>Promedio de contravenciones</h4>
+      <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+
+          <%= awesomplete_field( :searchContravertion,  collection: @contravertions.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+          <div class="field">
+              <%= radio_button_tag  :day, 'day', :checked=>false,:id=>'day'%>
+            <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
+          </div>
+          <div class="field">
+            <%= radio_button_tag :day, 'hour' , :checked=>false,:id=>'hour'%>
+            <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
+          </div><br>
+          <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+      <% end %>
+    </div>
+    <%if @averageContravertionsPerDay!=nil&&@day=="day"%>
+    <h4>PROMEDIO DE <%=@searchContravertion%> POR DIA</h4><br/>
+    <h5>  <p><%= sprintf('%.3f',@averageContravertionsPerDay )%></p></h5>
+    <%end%>
+     <p><%if @averageContravertionsPerHour!=nil&&@day=="hour"%>
+    <h4>PROMEDIO DE <%=@searchContravertion%> POR HORA</h4><br/>
+    <h5> <%= sprintf('%.3f',@averageContravertionsPerHour )%></p></h5>
+    <%end%>
+  </div>
+  </div>
+  <br>
+ <div class="row">
+
  <div class="col-md-5">
 
    <div class="form-inline">
-     <br><h4>Promedio de contravenciones</h4>
-     <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+        <br><h4>Probabilidad de delitos</h4>
+       <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
 
-         <%= awesomplete_field( :searchContravertion,  collection: @contravertions.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
-         <div class="field">
-             <%= radio_button_tag  :day, 'day', :checked=>false,:id=>'day'%>
-           <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
-         </div>
-         <div class="field">
-           <%= radio_button_tag :day, 'hour' , :checked=>false,:id=>'hour'%>
-           <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
-         </div><br>
-         <%= submit_tag 'Buscar', class: 'btn btn-default' %>
-     <% end %>
-   </div>
-   <%if @averageContravertionsPerDay!=nil&&@day=="day"%>
-   <h4>PROMEDIO DE <%=@searchContravertion%> POR DIA</h4><br/>
-   <h5>  <p><%= sprintf('%.3f',@averageContravertionsPerDay )%></p></h5>
-   <%end%>
-    <p><%if @averageContravertionsPerHour!=nil&&@day=="hour"%>
-   <h4>PROMEDIO DE <%=@searchContravertion%> POR HORA</h4><br/>
-   <h5> <%= sprintf('%.3f',@averageContravertionsPerHour )%></p></h5>
-   <%end%>
- </div>
- </div>
- <br>
+           <%= awesomplete_field( :searchCrimeProbability,  collection: @crimes.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+           <div class="field">
+               <%= radio_button_tag  :dayP, 'day', :checked=>false,:id=>'day'%>
+             <label ><span></span></label><sup>(marcar si se requiere calcular probabilidad por dia  )</sup>
+           </div>
+           <div class="field">
+             <%= radio_button_tag :dayP, 'hour' , :checked=>false,:id=>'hour'%>
+             <label ><span></span></label><sup>(marcar si se requiere calcular el probabilidad por hora )</sup>
+           </div><br>
+           <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+       <% end %>
+     </div>
+     <%if @probabilityCrimePerDay!=nil&&@dayP=="day"%>
+     <h4>PROBABILIDAD DE <%=@searchCrimeProbability%> POR DIA</h4><br/>
+     <h5>  <p><%= sprintf('%.3f',@probabilityCrimePerDay )%></p></h5>
+     <%end%>
+      <p><%if @probabilityCrimePerHour!=nil&&@dayP=="hour"%>
+     <h4>PROBABILIDAD DE <%=@searchCrimeProbability%> POR DIA</h4><br/>
+     <h5> <%= sprintf('%.3f',@probabilityCrimePerHour )%></p></h5>
+     <%end%>
+
+  </div>
+ <div class="col-md-5">
+
+    <div class="form-inline">
+      <br><h4>Probabilidad de contravenciones</h4>
+      <%= form_tag('/index_oficial', :method => 'get', id: 'search-form') do %>
+
+          <%= awesomplete_field( :searchContravertionProbability,  collection: @contravertions.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %>
+          <div class="field">
+              <%= radio_button_tag  :dayP, 'day', :checked=>false,:id=>'day'%>
+            <label ><span></span></label><sup>(marcar si se requiere calcular promedio por dia  )</sup>
+          </div>
+          <div class="field">
+            <%= radio_button_tag :dayP, 'hour' , :checked=>false,:id=>'hour'%>
+            <label ><span></span></label><sup>(marcar si se requiere calcular el promedio por hora )</sup>
+          </div><br>
+          <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+      <% end %>
+    </div>
+    <%if @probabilityContravertionsPerDay!=nil&&@dayP=="day"%>
+    <h4>PROBABILIDAD DE <%=@searchContravertionProbability%> POR DIA</h4><br/>
+    <h5>  <p><%= sprintf('%.3f',@probabilityContravertionsPerDay )*100%></p></h5>
+    <%end%>
+     <p><%if @probabilityContravertionsPerHour!=nil&&@dayP=="hour"%>
+    <h4>PROBABILIDAD DE <%=@searchContravertionProbability%> POR HORA</h4><br/>
+    <h5> <%= sprintf('%.3f',@probabilityContravertionsPerHour )*100%></p></h5>
+    <%end%>
+  </div> <br><br>
+
  <div class="row">
-   
- </div>
+    <div class="col-md-9">
+
+      <div class="form-inline">
+        <br><h4>Probabilidad de contravenciones rango de fechas</h4>
+        <%= form_tag('/index_oficial', :method => 'get', :id =>"eventForm"  ) do %>
+
+            <%= awesomplete_field( :searchContravertionProbabilityDate,  collection: @contravertions.map{|v| v.to_s.encode("UTF-8").gsub(/[^a-z0-9\s]/i, '')},class: 'form-control') %> <br>
+             <label>Fecha inicio</label>
+               <%= datetime_select :startdate, :ampm => true%><br>
+
+              <label >fecha final</label>
+             <%= datetime_select  :enddate, :ampm => true%><br>
+           
+            <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+        <% end %>
+         </div>
+      
+      <%if  @searchContravertionProbabilityDate !=nil%>
+      <h4>PROBABILIDAD DE <%=@searchContravertionProbabilityDate%> En una fecha Determinada </h4><br/>
+      <h5>  <p><%=   sprintf('%.3f' , @probabilityContravertionsProbabilityDate) %></p></h5>
+      <%end%>
+      </div>
+    </div>
+    
+
+ <script type="text/javascript">
+
+ var startDate;
+          $("#enddate").datetimepicker({
+                      timepicker:true,
+                      closeOnDateSelect:false,
+                      closeOnTimeSelect: true,
+                      initTime: true,
+                      format: 'd-m-Y H:m:s',
+                      minDate: 0,
+                      roundTime: 'ceil',
+                      onChangeDateTime: function(dp,$input){
+                                startDate = $("#enddate").val();
+                                                            }
+                                                            });
+         $("#startdate").datetimepicker({
+                      timepicker:true,
+                      closeOnDateSelect:false,
+                      closeOnTimeSelect: true,
+                      initTime: true,
+                      format: 'd-m-Y H:m:s',
+                      onClose: function(current_time, $input){
+                             var endDate = $("#startdate").val();
+                             if(startDate>endDate){
+                                    alert('Please select correct date');
+                              }
+              }
+               });
+
+        $(function () {
+         $('#datetimepicker1').datetimepicker();
+         $('#datetimepicker2').datetimepicker();
+         $("#datetimepicker1").on("dp.change",function (e) {
+             $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+         });
+         $("#datetimepicker2").on("dp.change",function (e) {
+             $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+         });
+     });
+
+
+ </script>

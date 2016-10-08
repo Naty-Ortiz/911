@@ -63,5 +63,12 @@ gem 'font-awesome-rails'
 # gem 'will_paginate'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'will_paginate-bootstrap'
+gem 'momentjs-rails'
+
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.42'
+
 gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
+gem 'jquery-rails'
+
+gem 'gmaps-autocomplete-rails'

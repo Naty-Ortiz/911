@@ -9,7 +9,6 @@
 //
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
-//
 //= require jquery
 //= require jquery_ujs
 //= require jQuery-2.1.4.min
@@ -22,7 +21,10 @@
 //= require autocomplete-rails
 //= require selectivity
 //= require awesomplete
-//= require_tree .
+//= require_tree
+//= require moment
+//= require bootstrap-datetimepicker
+
 
 var ready = function(){
 

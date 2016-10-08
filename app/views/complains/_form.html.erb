@@ -89,7 +89,7 @@
       <label>Zona <i class="fa fa-asterisk"></i></label><br>
       <%= f.select   :zone, ['NORTE','NOR-ESTE','NOR-OESTE','ESTE','OESTE','SUD','SUD-OESTE','SUD-OESTE','AV. B. GALINDO', 'AV. PETROLERA'] ,{}, :class => 'form-control'  %>
     </div><br>
-    <div class="field"  <% if  @complain.observations!=nil %>style ="display:block" <%else%> style ="display:none" <%end%>>
+    <div class="field"  <% if @observationsAux!=nil %>style ="display:block" <%else%> style ="display:none" <%end%>>
       <label>Observaciones <i class="fa fa-asterisk"></i></label><br>
       <%= f.text_area   :observations, :class => 'form-control small-text-area'  %>
     </div><br>
@@ -99,7 +99,7 @@
       <div class="panel-heading">Para seleccionar la ubicaci&oacute;n  haga click en el mapa.</div>
     </div>
     <div id="map" style="width: 100%; height: 630px;"></div>
-      <input id="pac-input" class="controls" type="text" size="35" placeholder="Search Box">
+      <input id="pac-input" class="controls" type="text" size="85" placeholder="Search Box">
       <%= f.hidden_field   :latitude, id: 'map_lat' %>
       <%= f.hidden_field   :longitude, id: 'map_lng' %>
     </div><br>
